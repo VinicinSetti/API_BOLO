@@ -22,6 +22,7 @@ usersRouter.post('/',
             email: Joi.string().email().required(),
             password: Joi.string().required(),
             qtd_bolin: Joi.number().required(),
+            qtd_total_bolin: Joi.number().required(),
         }
     }),
     userController.create

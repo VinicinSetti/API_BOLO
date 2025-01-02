@@ -21,6 +21,9 @@ class User {
     @Column()
     qtd_bolin: number;
 
+    @Column()
+    qtd_total_bolin: number;
+
     @CreateDateColumn()
     created_at: Date;
 

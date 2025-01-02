@@ -10,10 +10,11 @@ interface IRequest {
     email: string;
     password: string;
     qtd_bolin: number;
+    qtd_total_bolin: number;
 }
 
 class CreateUserService {
-    public async execute({name, email, password, qtd_bolin}: IRequest): Promise<User> {
+    public async execute({name, email, password, qtd_bolin, qtd_total_bolin}: IRequest): Promise<User> {
         const usersRepository = getCustomRepository(UsersRepository);
         const emailExists = await usersRepository.findByEmail(email);
 
@@ -28,6 +29,7 @@ class CreateUserService {
             email,
             password: hashedPassword,
             qtd_bolin,
+            qtd_total_bolin,
         });
 
         await usersRepository.save(user);

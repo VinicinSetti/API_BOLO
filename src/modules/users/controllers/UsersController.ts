@@ -18,12 +18,12 @@ export default class UserController {
 
 
     public async create(request: Request, response: Response): Promise<Response>{
-        const {name, email, password, qtd_bolin} = request.body;
+        const {name, email, password, qtd_bolin, qtd_total_bolin} = request.body;
 
         const creatUser = new CreateUserService();
 
         const user = await creatUser.execute({
-            name, email, password, qtd_bolin,
+            name, email, password, qtd_bolin, qtd_total_bolin
         });
 
         return response.json(instanceToInstance(user));
