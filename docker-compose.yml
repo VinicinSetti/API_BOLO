@@ -2,6 +2,8 @@ services:
   postgres:
     image: postgres:latest
     container_name: postgres
+    networks:
+      - api-bolinho
     environment:
       - POSTGRES_USER=docker
       - POSTGRES_PASSWORD=postgres
@@ -11,17 +13,44 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
 
+  # app:
+  #   build: 
+  #     context: .
+  #     dockerfile: Dockerfile.dev
+  #   container_name: api-bolinho
+  #   ports:
+  #     - "3000:3000"
+  #   depends_on:
+  #     - postgres
+  #   environment:
+  #     - "5432:5432"
+  #     - DATABASE_HOST=postgres
+  #     - DATABASE_PORT=5432
+  #     - DATABASE_USERNAME=docker
+  #     - DATABASE_PASSWORD=postgres
+  #     - DATABASE_DATABASE=apibolinho
+  #   volumes:
+  #     - .:/app
+  
   app:
     build: 
       context: .
-      dockerfile: Dockerfile
-    container_name: typeorm-postgres
+      dockerfile: Dockerfile.prod
+    container_name: api-bolinho
+    restart: always
+    networks:
+      - api-bolinho
     ports:
-      - "3000:3000"
+      - "3333:3333"
     depends_on:
       - postgres
     environment:
-      - "5432:5432"
+      - NODE_ENV=production
+      - DATABASE_HOST=postgres
+      - DATABASE_PORT=5432
+      - DATABASE_USERNAME=docker
+      - DATABASE_PASSWORD=postgres
+      - DATABASE_DATABASE=apibolinho
     volumes:
       - .:/app
 
@@ -40,3 +69,7 @@ services:
 volumes:
   postgres_data:
     driver: local
+
+networks:
+  api-bolinho:
+    driver: bridge
